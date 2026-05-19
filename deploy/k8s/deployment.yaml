@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meridian-auth
+  namespace: meridian-auth
+spec:
+  replicas: 4
+  selector:
+    matchLabels: { app: meridian-auth }
+  template:
+    metadata:
+      labels: { app: meridian-auth }
+      annotations:
+        kms.aws.amazon.com/key-arn: "arn:aws:kms:us-west-2:826420459991:key/abcd1234-ef56-7890-abcd-ef1234567890"
+    spec:
+      containers:
+      - name: auth
+        image: meridian/auth-service:1.8.0
+        env:
+        - name: SIGNING_KEY_KMS_ARN
+          value: "arn:aws:kms:us-west-2:826420459991:key/abcd1234-ef56-7890-abcd-ef1234567890"
+        - name: SIGNING_ALGORITHM
+          value: "RS256"
+        - name: HASH_ALGORITHM
+          value: "SHA-1"
+        volumeMounts:
+        - name: signing-keys
+          mountPath: /etc/keys
+          readOnly: true
+      volumes:
+      - name: signing-keys
+        secret:
+          secretName: auth-signing-keys

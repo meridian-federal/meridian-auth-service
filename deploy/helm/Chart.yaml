@@ -1,0 +1,6 @@
+apiVersion: v2
+name: meridian-auth
+description: Meridian Federal authentication service
+type: application
+version: 1.8.0
+appVersion: "1.8.0"
