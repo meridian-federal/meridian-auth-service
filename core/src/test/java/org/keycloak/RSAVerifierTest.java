@@ -43,6 +43,9 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+import org.bouncycastle.pqc.jcajce.spec.KyberParameterSpec;
+
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
@@ -61,8 +64,8 @@ public abstract class RSAVerifierTest {
     public static void setupCerts()
             throws Exception {
         // CryptoIntegration.init(ClassLoader.getSystemClassLoader());
-        badPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
-        idpPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
+        badPair = KeyPairGenerator.getInstance("DILITHIUM3", "BC").generateKeyPair();
+        idpPair = KeyPairGenerator.getInstance("DILITHIUM3", "BC").generateKeyPair();
     }
 
     @Before
@@ -88,7 +91,7 @@ public abstract class RSAVerifierTest {
 
     @Test
     public void testVerificationWithAddedX5cAndJwk() throws Exception {
-        KeyPair caKeyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
+        KeyPair caKeyPair = KeyPairGenerator.getInstance("DILITHIUM3", "BC").generateKeyPair();
         X509Certificate caCertificate = CertificateUtils.generateV1SelfSignedCertificate(caKeyPair, "root");
         X509Certificate idpCertificate = CertificateUtils.generateV3Certificate(idpPair,
                                                                                 caKeyPair.getPrivate(),
