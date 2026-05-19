@@ -34,6 +34,9 @@ import org.keycloak.util.JsonSerialization;
 import org.junit.Assert;
 import org.junit.Test;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+import org.bouncycastle.pqc.jcajce.spec.KyberParameterSpec;
+
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
@@ -59,7 +62,7 @@ public class SkeletonKeyTokenTest {
         token.addAccess("foo").addRole("admin");
         token.addAccess("bar").addRole("user");
 
-        KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
+        KeyPair keyPair = KeyPairGenerator.getInstance("DILITHIUM3", "BC").generateKeyPair();
 
         String encoded = new JWSBuilder()
                 .jsonContent(token)
@@ -79,7 +82,7 @@ public class SkeletonKeyTokenTest {
 
         idToken.setEmail("joe@email.cz");
 
-        KeyPair keyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
+        KeyPair keyPair = KeyPairGenerator.getInstance("DILITHIUM3", "BC").generateKeyPair();
 
         String encoded = new JWSBuilder()
                 .jsonContent(token)
