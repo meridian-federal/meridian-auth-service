@@ -260,7 +260,7 @@ public class HttpClientBuilder {
             SSLSocketFactory sslsf = null;
             SSLContext theContext = sslContext;
             if (disableTrustManager) {
-                theContext = SSLContext.getInstance("SSL");
+                theContext = SSLContext.getInstance("TLS");
                 theContext.init(null, new TrustManager[]{new PassthroughTrustManager()},
                         new SecureRandom());
                 verifier = new AllowAllHostnameVerifier();
