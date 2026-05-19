@@ -149,6 +149,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 /**
  * Moved test to subclass. so we can reuse initialization code.
  */
@@ -467,8 +469,8 @@ public abstract class OID4VCIssuerEndpointTest extends OID4VCTest {
     }
 
     public static JWK generateRsaJwk() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(2048);
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+        // Note: DILITHIUM3 does not require initialize() call
         KeyPair keyPair = keyGen.generateKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
@@ -486,8 +488,8 @@ public abstract class OID4VCIssuerEndpointTest extends OID4VCTest {
     }
 
     public static Map<String, Object> generateRsaJwkWithPrivateKey() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(2048);
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+        // Note: DILITHIUM3 does not require initialize() call
         KeyPair keyPair = keyGen.generateKeyPair();
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
