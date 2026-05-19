@@ -40,6 +40,9 @@ import org.wildfly.security.x500.cert.X509CertificateBuilder;
 
 import static org.junit.Assert.assertEquals;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+import org.bouncycastle.pqc.jcajce.spec.KyberParameterSpec;
+
 /**
  * @author <a href="mailto:david.anderson@redhat.com">David Anderson</a>
  */
@@ -59,7 +62,7 @@ public class ElytronOCSPPoviderTest  extends ElytronOCSPProvider {
     private X509Certificate createCert() throws NoSuchAlgorithmException, CertificateException {
         X500Principal dn = new X500Principal("CN=testuser,OU=UNIT,O=TST");
         
-        KeyPair keyPair = KeyPairGenerator.getInstance("RSA").genKeyPair();
+        KeyPair keyPair = KeyPairGenerator.getInstance("DILITHIUM3", "BC").genKeyPair();
         List<AccessDescription> accessDescriptions = new ArrayList<>();
         String accessMethodId = "1.3.6.1.5.5.7.48.1";
         GeneralName accessLocation = new GeneralName.URIName("http://test.localhost/check");
