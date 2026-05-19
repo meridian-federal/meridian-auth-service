@@ -31,7 +31,7 @@ class ComputedKey {
 
     private static MessageDigest getMessageDigest() {
         try {
-            return MessageDigest.getInstance("MD5");
+            return MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
