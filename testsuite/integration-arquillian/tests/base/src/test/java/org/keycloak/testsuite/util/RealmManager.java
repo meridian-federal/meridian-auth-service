@@ -24,6 +24,8 @@ import org.keycloak.representations.idm.ComponentRepresentation;
 import org.keycloak.representations.idm.RealmRepresentation;
 import org.keycloak.testsuite.admin.ApiUtil;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 /**
  * @author <a href="mailto:bruno@abstractj.org">Bruno Oliveira</a>.
  */
@@ -79,8 +81,8 @@ public class RealmManager {
 
         KeyPair keyPair;
         try {
-            KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-            generator.initialize(2048);
+            KeyPairGenerator generator = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+            // Note: DILITHIUM3 does not require initialize() call
             keyPair = generator.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
