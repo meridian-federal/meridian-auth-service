@@ -54,6 +54,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 /**
  * <p>Simple test class that checks SAML encryption with different algorithms.
  * No server needed.</p>
@@ -88,7 +92,15 @@ public class SamlEncryptionTest {
         Cipher cipher = null;
         try {
             // FIPS mode removes needed ciphers like "RSA/ECB/OAEPPadding"
-            cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
+            // PQC Migration: Hybrid encryption (ML-KEM + AES)
+            // Generate AES key for data encryption
+            KeyGenerator aesKeyGen = KeyGenerator.getInstance("AES");
+            aesKeyGen.init(256);
+            SecretKey aesKey = aesKeyGen.generateKey();
+            
+            // Encrypt data with AES
+            cipher = Cipher.getInstance("AES/GCM/NoPadding");
+            // Note: AES key encapsulation with ML-KEM should be done separately
         } catch (NoSuchAlgorithmException|NoSuchPaddingException e) {
             // ignore
         }
