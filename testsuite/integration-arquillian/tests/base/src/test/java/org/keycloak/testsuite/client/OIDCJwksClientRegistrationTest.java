@@ -63,6 +63,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 /**
  * @author <a href="mailto:mposolda@redhat.com">Marek Posolda</a>
  */
@@ -181,8 +183,8 @@ public class OIDCJwksClientRegistrationTest extends AbstractClientRegistrationTe
         clientRep2.setTokenEndpointAuthMethod(OIDCLoginProtocol.PRIVATE_KEY_JWT);
 
         // Generate some random keys for client2
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-        generator.initialize(2048);
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+        // Note: DILITHIUM3 does not require initialize() call
         PublicKey client2PublicKey = generator.generateKeyPair().getPublic();
 
         // Set client2 with manually set "kid" to be same like kid of client1 (but keys for both clients are different)
