@@ -40,6 +40,9 @@ import org.wildfly.security.x500.cert.X509CertificateBuilder;
 
 import static org.junit.Assert.assertArrayEquals;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+import org.bouncycastle.pqc.jcajce.spec.KyberParameterSpec;
+
 /**
  * @author <a href="mailto:david.anderson@redhat.com">David Anderson</a>
  */
@@ -121,7 +124,7 @@ public class CRLDistributionPointTest {
              distributionPoints.add(arg0);
 
         }
-        KeyPair keyPair = KeyPairGenerator.getInstance("RSA").genKeyPair();
+        KeyPair keyPair = KeyPairGenerator.getInstance("DILITHIUM3", "BC").genKeyPair();
         X509CertificateBuilder cbuilder = new X509CertificateBuilder()
         .setSubjectDn(dn)
         .setIssuerDn(dn)
