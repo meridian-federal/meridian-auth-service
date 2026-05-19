@@ -60,6 +60,11 @@ import org.bouncycastle.jce.ECNamedCurveTable;
 import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.bouncycastle.jce.spec.ECNamedCurveSpec;
 
+import javax.crypto.KeyGenerator;
+import org.bouncycastle.jcajce.SecretKeyWithEncapsulation;
+import org.bouncycastle.jcajce.spec.KEMGenerateSpec;
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 /**
  * ECDH Ephemeral Static Algorithm Provider.
  *
@@ -205,7 +210,13 @@ public class BCEcdhEsAlgorithmProvider implements JWEAlgorithmProvider {
 
     private static byte[] deriveSharedSecret(Key publicKey, Key privateKey)
             throws NoSuchAlgorithmException, InvalidKeyException, IllegalStateException {
-        KeyAgreement keyAgreement = KeyAgreement.getInstance("ECDH");
+        // ML-KEM key encapsulation (replaces ECDH key agreement)
+        // NOTE: peerKey must be a KYBER/ML-KEM PublicKey from the remote party.
+        // Send kemKey.getEncapsulation() to the recipient so they can decapsulate.
+        KeyGenerator kemGen = KeyGenerator.getInstance("KYBER", "BC");
+        kemGen.init(new KEMGenerateSpec(peerKey, "AES"), new SecureRandom());
+        SecretKeyWithEncapsulation kemKey = (SecretKeyWithEncapsulation) kemGen.generateKey();
+        byte[] sharedSecret = kemKey.getEncoded();
         keyAgreement.init(privateKey);
         keyAgreement.doPhase(publicKey, true);
         return keyAgreement.generateSecret();
