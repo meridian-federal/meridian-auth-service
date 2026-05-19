@@ -118,6 +118,8 @@ import static org.keycloak.testsuite.oid4vc.issuance.signing.OID4VCIssuerEndpoin
 import static org.keycloak.testsuite.oid4vc.issuance.signing.OID4VCSdJwtIssuingEndpointTest.getCredentialIssuer;
 import static org.keycloak.testsuite.oid4vc.issuance.signing.OID4VCSdJwtIssuingEndpointTest.getJtiGeneratedIdMapper;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 /**
  * Super class for all OID4VC tests. Provides convenience methods to ease the testing.
  */
@@ -230,8 +232,8 @@ public abstract class OID4VCTest extends AbstractTestRealmKeycloakTest {
 
 	public static KeyWrapper getRsaKey(KeyUse keyUse, String algorithm, String keyName) {
 		try {
-			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-			kpg.initialize(2048);
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+			// Note: DILITHIUM3 does not require initialize() call
 			var keyPair = kpg.generateKeyPair();
 			KeyWrapper kw = new KeyWrapper();
 			kw.setPrivateKey(keyPair.getPrivate());
