@@ -1,0 +1,23 @@
+image:
+  repository: meridian/auth-service
+  tag: "1.8.0"
+
+tls:
+  enabled: true
+  protocols:
+    - TLSv1.2
+  ciphers: "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-SHA256"
+  certSecret: meridian-auth-tls
+
+signing:
+  algorithm: RS256
+  keyRotationDays: 90
+  kmsKeyArn: "arn:aws:kms:us-west-2:826420459991:key/abcd1234-ef56-7890-abcd-ef1234567890"
+
+session:
+  cookieEncryption: AES-128-CBC
+  hmacAlgorithm: HmacSHA1
+
+vault:
+  endpoint: "https://vault.meridian-federal.internal:8200"
+  signingKeyPath: "secret/data/auth/jwt-signing-key"
