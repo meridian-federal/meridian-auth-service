@@ -34,6 +34,8 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 public final class OID4VCProofTestUtils {
 
     private OID4VCProofTestUtils() {
@@ -177,8 +179,8 @@ public final class OID4VCProofTestUtils {
 
     public static KeyWrapper createRsaKeyPair(String keyId) {
         try {
-            KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", BouncyIntegration.PROVIDER);
-            kpg.initialize(2048);
+            KeyPairGenerator kpg = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+            // Note: DILITHIUM3 does not require initialize() call
             var keyPair = kpg.generateKeyPair();
 
             RSAPublicKey pub = (RSAPublicKey) keyPair.getPublic();
