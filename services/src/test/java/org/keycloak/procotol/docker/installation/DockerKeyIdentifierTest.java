@@ -13,6 +13,8 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 /**
  * Docker gets really unhappy if the key identifier is not in the format documented here:
  * @see https://github.com/docker/libtrust/blob/master/key.go#L24
@@ -24,9 +26,8 @@ public class DockerKeyIdentifierTest {
 
     @Before
     public void shouldBlah() throws Exception {
-        final KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(2048, new SecureRandom());
-
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+        // Note: DILITHIUM3 does not require initialize() call
         final KeyPair keypair = keyGen.generateKeyPair();
         publicKey = keypair.getPublic();
         final DockerKeyIdentifier identifier = new DockerKeyIdentifier(publicKey);
