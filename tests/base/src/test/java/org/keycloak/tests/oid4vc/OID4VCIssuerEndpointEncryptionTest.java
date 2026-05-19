@@ -49,6 +49,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import org.bouncycastle.pqc.jcajce.provider.BouncyCastlePQCProvider;
+
 @KeycloakIntegrationTest(config = OID4VCIssuerTestBase.VCTestServerConfig.class)
 public class OID4VCIssuerEndpointEncryptionTest extends OID4VCIssuerEndpointTest {
 
@@ -262,8 +264,8 @@ public class OID4VCIssuerEndpointEncryptionTest extends OID4VCIssuerEndpointTest
     }
 
     private static Map<String, Object> generateRsaJwkWithPrivateKey() throws NoSuchAlgorithmException {
-        var keyGen = java.security.KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(2048);
+        KeyPairGenerator java.security.KeyPairGenerator = KeyPairGenerator.getInstance("DILITHIUM3", "BC");
+        // Note: DILITHIUM3 does not require initialize() call
         var keyPair = keyGen.generateKeyPair();
         var publicKey = (RSAPublicKey) keyPair.getPublic();
 
